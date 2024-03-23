@@ -16,7 +16,10 @@
 
 .details-image {
     width: 60%;
+    height: auto;
     padding: 1em;
+    display: flex;
+    justify-content: center;
 }
 
 .description-container {
@@ -28,4 +31,8 @@
 .macros {
     display: flex;
     justify-content: space-around;
+}
+
+img[alt=no-photo] {
+    width: 100%;
 }

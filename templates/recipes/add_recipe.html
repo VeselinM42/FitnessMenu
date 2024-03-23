@@ -2,7 +2,7 @@
 {% load static %}
 {% block main_content %}
     <form action="{% url "add recipe" %}" method="post">
-        <fieldset>
+        <fieldset class="add-recipe">
             {{ form }}
             <button type="submit" class="add-recipe">Enter</button>
             {% csrf_token %}

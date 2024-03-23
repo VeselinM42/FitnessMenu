@@ -1,0 +1,13 @@
+.add-recipe {
+    height: 36em;
+    justify-content: space-between;
+}
+
+.add-recipe div {
+    padding: 0.2em;
+}
+
+.add-recipe button {
+    margin-top: 0.5em;
+    width: 70px;
+}

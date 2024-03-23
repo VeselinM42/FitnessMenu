@@ -1,17 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.db.models import Avg
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
-from fitness_menu_app.recipes.models import Recipe
+from fitness_menu_app.recipes.models import Recipe, Review
 
 
 class CreateRecipeView(LoginRequiredMixin, views.CreateView):
     model = Recipe
     fields = ("name", "type", "description", "image_url", "calories", "protein", "carbs", "fats")
     template_name = "recipes/add_recipe.html"
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("recipes list")
 
     def form_valid(self, form):
         form.instance.owner_id = self.request.user.id
@@ -19,8 +20,16 @@ class CreateRecipeView(LoginRequiredMixin, views.CreateView):
 
 
 class DetailsRecipeView(views.DetailView):
-    queryset = Recipe.objects.all()
+    model = Recipe
     template_name = 'recipes/recipe-details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recipe = self.get_object()
+        average_rating = recipe.review_set.aggregate(Avg('rating'))['rating__avg']
+        context['has_rated'] = Review.objects.filter(recipe=recipe, user=self.request.user).exists()
+        context['average_rating'] = average_rating
+        return context
 
 
 class UpdateRecipeView(views.UpdateView):
@@ -52,3 +61,27 @@ def recipes_list(request):
     }
 
     return render(request, "recipes/recipe_list.html", context)
+
+
+class ReviewCreateView(views.CreateView):
+    model = Review
+    fields = ['rating', 'comment']
+    template_name = 'recipes/recipe-review.html'
+    success_url = reverse_lazy('details recipe')
+
+    def get_recipe(self):
+        return get_object_or_404(Recipe, pk=self.kwargs['pk'])
+
+    def test_func(self):
+        recipe = self.get_recipe()
+        return super().test_func() and not Review.objects.filter(recipe=recipe, user=self.request.user).exists()
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.recipe = self.get_recipe()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("details recipe", kwargs={
+            "pk": self.kwargs['pk'],
+        })

@@ -68,9 +68,35 @@ class Recipe(models.Model):
         related_name='recipes',
     )
 
-    created_at = models.DateTimeField(_("created_at"), default=timezone.now)
+    created_at = models.DateTimeField(
+        _("created_at"),
+        default=timezone.now,
+    )
 
     def save(self, *args, **kwargs):
         if not self.owner_id and 'request' in kwargs:
             self.owner = kwargs['request'].user
         super().save(*args, **kwargs)
+
+
+class Review(models.Model):
+    MAX_RATE_VALUE = 5
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE
+    )
+
+    rating = models.IntegerField(
+        default=0,
+    )
+
+    comment = models.TextField(
+        blank=True,
+        null=True,
+    )

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <form method="post">
+        <fieldset>
+            <label for="rating">Rating:</label>
+            <input type="number" name="rating" id="rating" min="1" max="5" required>
+            <label for="comment">Comment:</label>
+            <textarea name="comment" id="comment"></textarea>
+            <button type="submit" class="recipe-review">Enter</button>
+            {% csrf_token %}
+        </fieldset>
+    </form>
+{% endblock %}
