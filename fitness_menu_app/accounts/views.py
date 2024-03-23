@@ -7,7 +7,7 @@ from django.contrib.auth import views as auth_views, get_user_model, logout, log
 
 from fitness_menu_app.accounts.forms import CreateUserForm
 from fitness_menu_app.accounts.models import CustomUser
-from fitness_menu_app.common.profiles_helper import get_profile
+from fitness_menu_app.helpers.profiles_helper import get_profile
 
 UserModel = get_user_model()
 
