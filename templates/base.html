@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>FitnessMenu</title>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}"/>
+</head>
+
+<body>
+<div id="box">
+    <header>
+        <nav>
+            <img src="{% static '/images/dumbbell.png' %}" alt="dumbbell"/>
+            <a href="{% url 'index' %}">FitnessMenu</a>
+
+            {% if request.user.is_authenticated %}
+                <ul>
+                    <li><a href="{% url 'recipes list' %}">Recipes</a></li>
+                    <li><a href="{% url 'add recipe' %}">Add Recipe</a></li>
+                    <li class="dropdown" onclick="toggleDropdown()">
+                        <a href="#" class="dropbtn">Profile</a>
+                        <div class="dropdown-content" id="profileDropdown">
+                            <a href="{% url 'details profile' pk=request.user.pk %}">Your Profile</a>
+                            <a href="{% url 'signout user' %}">Log Out</a>
+                        </div>
+                    </li>
+                </ul>
+            {% else %}
+                <ul>
+                    <li><a href="{% url 'recipes list' %}">Recipes</a></li>
+                    <li><a href="{% url 'signin user' %}">Login</a></li>
+                    <li><a href="{% url 'signup user' %}">Create Profile</a></li>
+                </ul>
+            {% endif %}
+        </nav>
+    </header>
+    {% block main_content %}
+    {% endblock %}
+    <footer>
+        <div>&copy;Veselin's project. All rights reserved.</div>
+    </footer>
+</div>
+<script>
+    function toggleDropdown() {
+        let dropdown = document.getElementById("profileDropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+    
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            let dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+                let openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

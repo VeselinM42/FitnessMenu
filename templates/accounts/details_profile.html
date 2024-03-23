@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <div id="details-profile-container">
+        <div id="profile-picture">
+            {% if object.profile_picture %}
+                <img src="{{ object.profile_picture }}" alt="img8"/>
+            {% else %}
+                <img src="{% static 'images/no-profile-picture.png' %}" alt="img8"/>
+            {% endif %}
+        </div>
+        <ul id="personal-info">
+            <li id="username">Username : {{ object.username }}</li>
+            <li id="email">Email : {{ object.email }}</li>
+            <li id="first_name">First Name : {{ object.first_name }}</li>
+            <li id="last-name">Last Name : {{ object.last_name }}</li>
+        </ul>
+        <div id="buttons">
+            <div id="edit"><button class="edit-button"><a href="{% url "edit profile" pk=object.pk %}">Edit</a></button></div>
+            <div id="delete"><button class="delete-button"><a href="{% url "delete profile" pk=object.pk %}">Delete</a></button></div>
+        </div>
+    </div>
+{% endblock %}

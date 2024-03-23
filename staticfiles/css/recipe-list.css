@@ -1,0 +1,81 @@
+#recipe-list {
+    display: flex;
+    max-width: 100%;
+    margin: 2em;
+    padding: 2em;
+    justify-content: center;
+}
+
+#details-btn {
+    text-decoration: none;
+    color: yellow;
+    margin: 0.5em;
+}
+
+.btn {
+    background-color: red;
+    width: 65%;
+    border-radius: 25px;
+    height: 1.5em;
+    text-align: center;
+}
+
+.recipe {
+    width: 30%;
+    margin: 2em;
+    padding: 2em;
+    display: flex;
+    background-color: black;
+    color: white;
+    border-radius: 35px;
+}
+
+.image {
+    width: 60%;
+    margin: 0.5em;
+    padding: 1em;
+}
+
+.description {
+    margin: 0.5em;
+}
+
+#recipe-img {
+    width: 100%;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .step-links {
+    display: inline-block;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: black;
+}
+
+.pagination .step-links a {
+    color: white;
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+    border-radius: 3px;
+}
+
+.pagination .step-links a:hover {
+    background-color: black;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: white;
+    padding: 3px 8px;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+    border-radius: 3px;
+    background-color: black;
+}

@@ -1,0 +1,64 @@
+#details-profile-container {
+    display: flex;
+    width: 25%;
+    height: 30em;
+    margin: 5em auto;
+    padding: 2em;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#profile-picture {
+    display: flex;
+    justify-content: center;
+    /*width: 150px;*/
+    /*height: auto;*/
+}
+
+#personal-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#buttons {
+    display: inline-flex;
+}
+
+img {
+    width: 200px;
+}
+
+ul {
+  list-style-type: none;
+    font-size: 1.5em;
+}
+
+.edit-button, .delete-button {
+    justify-content: center;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
+    color: black;
+    font-family: "Lato", serif;
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#edit, #delete {
+    margin: 1em;
+}
+

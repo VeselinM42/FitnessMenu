@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <div class="details-body">
+        <div class="recipe-details-container">
+            <div class="details-image">
+                {% if recipe.image_url %}
+                    <img src="{{ recipe.image_url }}" alt="photo"/>
+                {% else %}
+                    <img src="{% static "/images/no-photo-image.png" %}" alt="no-photo"/>
+                {% endif %}
+            </div>
+            <div class="description-container">
+                <div class="details-container">
+                    <h2 class="name">{{ recipe.name }}</h2>
+                    <h4>Macros and calories in 100g</h4>
+                    <p class="calories">Calories: {{ recipe.calories }}kcal</p>
+                    <div class="macros">
+                        <p class="protein">Protein: {{ recipe.protein }}g</p>
+                        <p class="carbs">Carbs: {{ recipe.carbs }}g</p>
+                        <p class="fats">Fats: {{ recipe.fats }}g</p>
+                    </div>
+                </div>
+                <div class="how-to-make-container">
+                    <h2>How to make</h2>
+                    <p class="how-to-make">{{ recipe.description }}</p>
+                </div>
+                {% if recipe.owner_id == request.user.id %}
+                    <div id="buttons">
+                        <div id="edit"><button class="edit-button"><a href="{% url 'edit-recipe' pk=recipe.pk %}">Edit</a></button></div>
+                        <div id="delete"><button class="delete-button"><a href="{% url 'delete-recipe' pk=recipe.pk %}">Delete</a></button></div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

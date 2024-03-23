@@ -1,0 +1,94 @@
+/*@import url(https://fonts.googleapis.com/css?family=Lato:100,300,400,700);*/
+
+fieldset {
+    display: flex;
+    width: 25%;
+    height: 30em;
+    margin: 5em auto;
+    padding: 2em;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+input, input + label > i {
+    border-radius: 3px;
+    box-shadow: none;
+    border: 1px solid #384049;
+    background: white;
+    width: 70%;
+    color: black;
+    transition: all 0.3s ease;
+}
+
+input[type=text], input[type=number], input[type=email], input[type=password], input[type=url] {
+    font-size: 1em;
+    line-height: 1;
+    width: 90%;
+    height: 1.8em;
+}
+
+/*input[type=text]::-webkit-input-placeholder, input[type=number]::-webkit-input-placeholder, input[type=email]::-webkit-input-placeholder {*/
+/*    color: black;*/
+/*    line-height: 1.2;*/
+/*    -webkit-transition: all 0.2s ease;*/
+/*    transition: all 0.2s ease;*/
+/*}*/
+
+/*input[type=text]:hover, input[type=number]:hover, input[type=email]:hover {*/
+/*    border-color: white;*/
+/*}*/
+
+/*input[type=text]:focus, input[type=number]:focus, input[type=email]:focus {*/
+/*    outline: white;*/
+/*    border-color: white;*/
+/*}*/
+
+.register, .login {
+    justify-content: center;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
+    color: black;
+    font-family: "Lato", serif;
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+/*#registerPage {*/
+/*    font-family: "Lato", serif;*/
+/*    font-size: 16px;*/
+/*    color: #aab2bd;*/
+/*    padding: 1em 0 10em;*/
+/*}*/
+
+/** {*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+/*p {*/
+/*    padding-top: 20px;*/
+/*}*/
+
+.helptext {
+    display: none;
+}
+
+label {
+    font-weight: bold;
+}
+
+fieldset div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+}

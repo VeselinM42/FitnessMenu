@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+    <div class="container-inline">
+        <section id="welcomePage">
+            <div id="welcome-message">
+                <h1>Welcome to FitnessMenu.</h1>
+            </div>
+        </section>
+    </div>
+    <div class="container-inline">
+        <article id="Left-article">
+            <div id="welcome-message">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur consequatur, consequuntur distinctio dolores eligendi enim fuga harum in, maxime nostrum perferendis quasi quidem reiciendis repellendus sequi sunt temporibus tenetur voluptatum!</p>
+            </div>
+        </article>
+        <section id="img">
+            <img src="{% static "/images/background.png"%}" alt='background'>
+        </section>
+        <article id="Right-article">
+            <div id="welcome-message">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur consequatur, consequuntur distinctio dolores eligendi enim fuga harum in, maxime nostrum perferendis quasi quidem reiciendis repellendus sequi sunt temporibus tenetur voluptatum!</p>
+            </div>
+        </article>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+.delete-profile {
+    display: flex;
+    width: 25%;
+    height: 20em;
+    margin: 5em auto;
+    padding: 2em;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.confirm, .edit-btn {
+    justify-content: center;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
+    color: black;
+    font-family: "Lato", serif;
+    font-size: 20px;
+    margin: 20px 1em 5px;
+}
+
+.sure-buttons {
+    display: inline-flex;
+}
