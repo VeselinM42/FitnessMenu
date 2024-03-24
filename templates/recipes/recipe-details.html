@@ -30,11 +30,13 @@
                     <h2>How to make</h2>
                     <p class="how-to-make">{{ recipe.description }}</p>
                 </div>
-                {% if not has_rated %}
-                    <div id="buttons">
-                        <button id="review"><a class="review-button" href="{% url 'recipe-review' pk=object.pk %}">Leave
-                            Review</a></button>
-                    </div>
+                {% if request.user.id != recipe.owner_id %}
+                    {% if not has_rated %}
+                        <div id="buttons">
+                            <button id="review"><a class="review-button" href="{% url 'recipe-review' pk=object.pk %}">Leave
+                                Review</a></button>
+                        </div>
+                    {% endif %}
                 {% endif %}
                 {% if recipe.owner_id == request.user.id %}
                     <div id="buttons">

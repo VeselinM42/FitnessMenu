@@ -19,5 +19,9 @@
             <div id="edit"><button class="edit-button"><a href="{% url "edit profile" pk=object.pk %}">Edit</a></button></div>
             <div id="delete"><button class="delete-button"><a href="{% url "delete profile" pk=object.pk %}">Delete</a></button></div>
         </div>
+        <div id="buttons">
+            <div id="change-email"><button class="change-email-button"><a href="{% url "email change" pk=object.pk %}">Change Email</a></button></div>
+            <div id="change-password"><button class="change-password-button"><a href="{% url "password change" pk=object.pk %}">Change Password</a></button></div>
+        </div>
     </div>
 {% endblock %}

@@ -7,7 +7,7 @@ from django.urls import reverse_lazy, reverse
 
 from django.contrib.auth import views as auth_views, get_user_model, logout, login
 
-from fitness_menu_app.accounts.forms import CreateUserForm
+from fitness_menu_app.accounts.forms import CreateUserForm, CustomPasswordChangeForm, EmailChangeForm
 from fitness_menu_app.accounts.models import CustomUser
 from fitness_menu_app.helpers.profiles_helper import get_profile
 from fitness_menu_app.recipes.models import Recipe
@@ -88,3 +88,28 @@ def profile_recipes_list(request, pk):
     }
 
     return render(request, 'recipes/recipe_list.html', context)
+
+
+class EmailChangeView(views.UpdateView):
+    queryset = get_profile()
+    template_name = 'accounts/password-or-email-change.html'
+    form_class = EmailChangeForm
+
+    def get_success_url(self):
+        return reverse("details profile", kwargs={
+            "pk": self.object.pk,
+        })
+
+    def form_valid(self, form):
+        self.request.user.email = form.cleaned_data['email']
+        self.request.user.save()
+        return super().form_valid(form)
+
+
+class PasswordChangeView(auth_views.PasswordChangeView):
+    template_name = 'accounts/password-or-email-change.html'
+    form_class = CustomPasswordChangeForm
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('details profile', kwargs={'pk': pk})

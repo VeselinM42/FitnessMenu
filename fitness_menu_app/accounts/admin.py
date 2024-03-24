@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin, get_user_model
-# from django.contrib.auth.models import User
 
-from fitness_menu_app.accounts.forms import CreateUserForm, FitnessMenuChangeForm
+from fitness_menu_app.accounts.forms import CreateUserForm, ChangeUserFrom
 
 UserModel = get_user_model()
 
@@ -11,14 +10,14 @@ UserModel = get_user_model()
 class AppUserAdmin(auth_admin.UserAdmin):
     model = UserModel
     add_form = CreateUserForm
-    form = FitnessMenuChangeForm
+    form = ChangeUserFrom
 
     list_display = ('pk', 'username', 'is_staff', 'is_superuser')
     search_fields = ('username',)
     ordering = ('pk',)
 
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
+        (None, {'fields': ('username', 'email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
@@ -29,7 +28,7 @@ class AppUserAdmin(auth_admin.UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("username", "password1", "password2"),
+                "fields": ("username", 'email', "password1", "password2"),
             },
         ),
     )
