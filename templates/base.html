@@ -24,6 +24,7 @@
                         <div class="dropdown-content" id="profileDropdown">
                             <a href="{% url 'details profile' pk=request.user.pk %}">Details</a>
                             <a href="{% url 'profile recipes' pk=request.user.pk %}">My Recipes</a>
+                            <a href="{% url 'personal recipe lists' pk=request.user.pk %}">My Lists</a>
                             <a href="{% url 'signout user' %}">Log Out</a>
                         </div>
                     </li>

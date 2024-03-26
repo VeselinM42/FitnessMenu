@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
+# from fitness_menu_app.accounts.models import RecipeLists
+# from fitness_menu_app.recipes.forms import AddRecipeToListForm
 from fitness_menu_app.recipes.models import Recipe, Review
 
 
@@ -85,3 +87,15 @@ class ReviewCreateView(views.CreateView):
         return reverse("details recipe", kwargs={
             "pk": self.kwargs['pk'],
         })
+
+
+# class AddRecipeToListView(views.FormView):
+#     template_name = 'add_recipe_to_list.html'
+#     form_class = AddRecipeToListForm
+#
+#     def form_valid(self, form):
+#         list_name = form.cleaned_data['name']
+#         recipe_id = self.kwargs['id']
+#         recipe_list = get_object_or_404(RecipeLists, name=list_name, user=self.request.user)
+#         recipe = get_object_or_404(Recipe, pk=recipe_id)
+#         return redirect('view_favorite_list', list_id=recipe_list.id)

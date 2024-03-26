@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <form action="{% url "create recipe list" pk=request.user.pk %}" method="post">
+        <fieldset class="create-recipe-list">
+            {{ form }}
+            <button type="submit" class="create-recipe-list">Enter</button>
+            {% csrf_token %}
+        </fieldset>
+    </form>
+{% endblock %}

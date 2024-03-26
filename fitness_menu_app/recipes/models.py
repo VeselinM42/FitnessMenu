@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from fitness_menu_app.accounts.models import CustomUser
+
 UserModel = get_user_model()
 
 
@@ -99,4 +101,22 @@ class Review(models.Model):
     comment = models.TextField(
         blank=True,
         null=True,
+    )
+
+
+class RecipeLists(models.Model):
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE
+    )
+
+    name = models.CharField(
+        max_length=100
+    )
+
+    recipes = models.ManyToManyField(
+        Recipe,
+        related_name='lists',
+        blank=True
     )

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <div>
+        <h1>My Lists</h1>
+        <ul>
+            {% for list in lists %}
+{#                {% url 'list_detail' list_id=list.id %}#}
+                <li><a href="">{{ list.name }}</a></li>
+            {% empty %}
+                <h2>No lists Yet.</h2>
+            {% endfor %}
+            <div class="buttons">
+                <button class="create-list"><a href="{% url 'create recipe list' pk=request.user.pk %}">Create List</a></button>
+            </div>
+        </ul>
+    </div>
+{% endblock %}
