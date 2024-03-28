@@ -7,7 +7,7 @@ from django.views import generic as views
 
 # from fitness_menu_app.accounts.models import RecipeLists
 # from fitness_menu_app.recipes.forms import AddRecipeToListForm
-from fitness_menu_app.recipes.models import Recipe, Review
+from fitness_menu_app.recipes.models import Recipe, Review, RecipeLists
 
 
 class CreateRecipeView(LoginRequiredMixin, views.CreateView):
@@ -31,7 +31,17 @@ class DetailsRecipeView(views.DetailView):
         average_rating = recipe.review_set.aggregate(Avg('rating'))['rating__avg']
         context['has_rated'] = Review.objects.filter(recipe=recipe, user=self.request.user).exists()
         context['average_rating'] = average_rating
+        context['lists'] = RecipeLists.objects.filter(user=self.request.user)
         return context
+
+    def post(self, request, *args, **kwargs):
+        recipe_id = self.kwargs['pk']
+        list_id = request.POST.get('list_id')
+        if list_id:
+            recipe = Recipe.objects.get(pk=recipe_id)
+            recipe_list = RecipeLists.objects.get(pk=list_id)
+            recipe_list.recipes.add(recipe)
+        return redirect('details recipe', pk=recipe_id)
 
 
 class UpdateRecipeView(views.UpdateView):
@@ -89,13 +99,28 @@ class ReviewCreateView(views.CreateView):
         })
 
 
-# class AddRecipeToListView(views.FormView):
-#     template_name = 'add_recipe_to_list.html'
-#     form_class = AddRecipeToListForm
-#
-#     def form_valid(self, form):
-#         list_name = form.cleaned_data['name']
-#         recipe_id = self.kwargs['id']
-#         recipe_list = get_object_or_404(RecipeLists, name=list_name, user=self.request.user)
-#         recipe = get_object_or_404(Recipe, pk=recipe_id)
-#         return redirect('view_favorite_list', list_id=recipe_list.id)
+def add_to_list(request, pk):
+    if request.method == 'POST':
+        list_id = request.POST.get('list_id')
+        if list_id:
+            recipe = get_object_or_404(Recipe, pk=pk)
+            recipe_list = get_object_or_404(RecipeLists, pk=list_id)
+            recipe_list.recipes.add(recipe)
+            return redirect('details recipe', pk=pk)
+
+
+class PersonalRecipeListView(views.ListView):
+    model = Recipe
+    template_name = 'recipes/recipe_list.html'
+    context_object_name = 'page_obj'
+    paginate_by = 3
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        list_id = self.kwargs['list_id']
+        recipe_list = get_object_or_404(RecipeLists, pk=list_id)
+        paginator = Paginator(recipe_list.recipes.all(), self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+        return context

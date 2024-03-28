@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from fitness_menu_app.accounts.models import CustomUser
 
 UserModel = get_user_model()
 
@@ -117,6 +116,6 @@ class RecipeLists(models.Model):
 
     recipes = models.ManyToManyField(
         Recipe,
-        related_name='lists',
+        related_name='list',
         blank=True
     )
