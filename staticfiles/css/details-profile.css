@@ -15,8 +15,6 @@
 #profile-picture {
     display: flex;
     justify-content: center;
-    /*width: 150px;*/
-    /*height: auto;*/
 }
 
 #personal-info {

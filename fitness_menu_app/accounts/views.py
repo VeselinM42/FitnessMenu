@@ -1,7 +1,6 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import AccessMixin
-from django.core.paginator import Paginator
-from django.shortcuts import redirect, render
+
+from django.shortcuts import redirect
 from django.views import generic as views
 from django.urls import reverse_lazy, reverse
 

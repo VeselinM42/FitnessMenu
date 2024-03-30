@@ -1,5 +1,3 @@
-/*@import url(https://fonts.googleapis.com/css?family=Lato:100,300,400,700);*/
-
 fieldset {
     display: flex;
     width: 25%;
@@ -31,22 +29,6 @@ input[type=text], input[type=number], input[type=email], input[type=password], i
     height: 1.8em;
 }
 
-/*input[type=text]::-webkit-input-placeholder, input[type=number]::-webkit-input-placeholder, input[type=email]::-webkit-input-placeholder {*/
-/*    color: black;*/
-/*    line-height: 1.2;*/
-/*    -webkit-transition: all 0.2s ease;*/
-/*    transition: all 0.2s ease;*/
-/*}*/
-
-/*input[type=text]:hover, input[type=number]:hover, input[type=email]:hover {*/
-/*    border-color: white;*/
-/*}*/
-
-/*input[type=text]:focus, input[type=number]:focus, input[type=email]:focus {*/
-/*    outline: white;*/
-/*    border-color: white;*/
-/*}*/
-
 .register, .login {
     justify-content: center;
     width: 100px;
@@ -62,21 +44,6 @@ input[type=text], input[type=number], input[type=email], input[type=password], i
     margin-bottom: 5px;
     margin-top: 20px;
 }
-
-/*#registerPage {*/
-/*    font-family: "Lato", serif;*/
-/*    font-size: 16px;*/
-/*    color: #aab2bd;*/
-/*    padding: 1em 0 10em;*/
-/*}*/
-
-/** {*/
-/*    box-sizing: border-box;*/
-/*}*/
-
-/*p {*/
-/*    padding-top: 20px;*/
-/*}*/
 
 .helptext {
     display: none;

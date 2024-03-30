@@ -1,13 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Avg
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
 from fitness_menu_app.recipes.forms import NutritionForm, RecipeForm
-# from fitness_menu_app.accounts.models import RecipeLists
-# from fitness_menu_app.recipes.forms import AddRecipeToListForm
 from fitness_menu_app.recipes.models import Recipe, Review, RecipeLists, Nutrition
 
 
@@ -92,7 +90,6 @@ class UpdateRecipeView(views.UpdateView):
             nutrition_info.save()
             return super().form_valid(form)
         else:
-            # Handle form validation errors
             return self.form_invalid(form)
 
     def get_success_url(self):
@@ -103,7 +100,6 @@ class RecipeDeleteView(views.DeleteView):
     model = Recipe
     template_name = "recipes/delete-recipe.html"
     success_url = reverse_lazy('recipes list')
-
 
 
 class RecipeListView(views.ListView):
