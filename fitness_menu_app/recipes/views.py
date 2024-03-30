@@ -5,20 +5,39 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
+from fitness_menu_app.recipes.forms import NutritionForm, RecipeForm
 # from fitness_menu_app.accounts.models import RecipeLists
 # from fitness_menu_app.recipes.forms import AddRecipeToListForm
-from fitness_menu_app.recipes.models import Recipe, Review, RecipeLists
+from fitness_menu_app.recipes.models import Recipe, Review, RecipeLists, Nutrition
 
 
 class CreateRecipeView(LoginRequiredMixin, views.CreateView):
     model = Recipe
-    fields = ("name", "type", "description", "image_url", "calories", "protein", "carbs", "fats")
+    form_class = RecipeForm
     template_name = "recipes/add_recipe.html"
     success_url = reverse_lazy("recipes list")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['nutrition_form'] = NutritionForm(self.request.POST)
+        else:
+            context['nutrition_form'] = NutritionForm()
+        return context
+
     def form_valid(self, form):
         form.instance.owner_id = self.request.user.id
-        return super().form_valid(form)
+        context = self.get_context_data()
+        nutrition_form = context['nutrition_form']
+        if form.is_valid() and nutrition_form.is_valid():
+            self.object = form.save()
+            nutrition_info = nutrition_form.save(commit=False)
+            nutrition_info.recipe = self.object
+            nutrition_info.save()
+            return super().form_valid(form)
+        else:
+            # Handle form validation errors
+            return self.form_invalid(form)
 
 
 class DetailsRecipeView(views.DetailView):
@@ -29,9 +48,11 @@ class DetailsRecipeView(views.DetailView):
         context = super().get_context_data(**kwargs)
         recipe = self.get_object()
         average_rating = recipe.review_set.aggregate(Avg('rating'))['rating__avg']
+        nutrition = get_object_or_404(Nutrition, recipe=recipe)
         context['has_rated'] = Review.objects.filter(recipe=recipe, user=self.request.user).exists()
         context['average_rating'] = average_rating
         context['lists'] = RecipeLists.objects.filter(user=self.request.user)
+        context['nutrition'] = nutrition
         return context
 
     def post(self, request, *args, **kwargs):
@@ -46,13 +67,36 @@ class DetailsRecipeView(views.DetailView):
 
 class UpdateRecipeView(views.UpdateView):
     model = Recipe
-    fields = ("description", "image_url", "calories", "protein", "carbs", "fats")
+    form_class = RecipeForm
     template_name = "recipes/edit-recipe.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['form'] = RecipeForm(self.request.POST, instance=self.object)
+            context['nutrition_form'] = NutritionForm(self.request.POST)
+        else:
+            context['form'] = RecipeForm(instance=self.object)
+            nutrition_instance = self.object.nutrition.first()
+            context['nutrition_form'] = NutritionForm(instance=nutrition_instance)
+        return context
+
+    def form_valid(self, form):
+        form.instance.owner_id = self.request.user.id
+        context = self.get_context_data()
+        nutrition_form = context['nutrition_form']
+        if form.is_valid() and nutrition_form.is_valid():
+            self.object = form.save()
+            nutrition_info = nutrition_form.save(commit=False)
+            nutrition_info.recipe = self.object
+            nutrition_info.save()
+            return super().form_valid(form)
+        else:
+            # Handle form validation errors
+            return self.form_invalid(form)
+
     def get_success_url(self):
-        return reverse("details recipe", kwargs={
-            "pk": self.object.pk,
-        })
+        return reverse("details recipe", kwargs={"pk": self.object.pk})
 
 
 class RecipeDeleteView(views.DeleteView):
@@ -61,18 +105,22 @@ class RecipeDeleteView(views.DeleteView):
     success_url = reverse_lazy('recipes list')
 
 
-def recipes_list(request):
-    all_recipes = Recipe.objects.order_by('-created_at')
 
-    paginator = Paginator(all_recipes, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+class RecipeListView(views.ListView):
+    model = Recipe
+    template_name = 'recipes/recipe_list.html'
+    context_object_name = 'recipe_nutrition_list'
+    paginate_by = 3
 
-    context = {
-        'page_obj': page_obj
-    }
+    def get_queryset(self):
+        queryset = super().get_queryset()
 
-    return render(request, "recipes/recipe_list.html", context)
+        recipe_nutrition_list = []
+
+        for recipe in queryset:
+            nutrition = recipe.nutrition.first()
+            recipe_nutrition_list.append((recipe, nutrition))
+        return recipe_nutrition_list
 
 
 class ReviewCreateView(views.CreateView):
@@ -112,8 +160,20 @@ def add_to_list(request, pk):
 class PersonalRecipeListView(views.ListView):
     model = Recipe
     template_name = 'recipes/recipe_list.html'
-    context_object_name = 'page_obj'
+    context_object_name = 'recipe_nutrition_list'
     paginate_by = 3
+
+    def get_queryset(self):
+        list_id = self.kwargs['list_id']
+        recipe_list = get_object_or_404(RecipeLists, pk=list_id)
+        queryset = recipe_list.recipes.all()
+
+        recipe_nutrition_list = []
+
+        for recipe in queryset:
+            nutrition = recipe.nutrition.first()
+            recipe_nutrition_list.append((recipe, nutrition))
+        return recipe_nutrition_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

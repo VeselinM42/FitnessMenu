@@ -4,6 +4,7 @@
     <form action="{% url "edit-recipe" pk=object.pk %}" method="post">
         <fieldset>
             {{ form }}
+            {{ nutrition_form }}
             <button type="submit" class="update-recipe">Enter</button>
             {% csrf_token %}
         </fieldset>

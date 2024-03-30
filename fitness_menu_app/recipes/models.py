@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-
 UserModel = get_user_model()
 
 
@@ -43,6 +42,33 @@ class Recipe(models.Model):
         null=True,
     )
 
+    owner = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+        related_name='recipes',
+    )
+
+    created_at = models.DateTimeField(
+        _("created_at"),
+        default=timezone.now,
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.owner_id and 'request' in kwargs:
+            self.owner = kwargs['request'].user
+        super().save(*args, **kwargs)
+
+
+class Nutrition(models.Model):
+
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='nutrition',
+        blank=True,
+        null=True,
+    )
+
     calories = models.IntegerField(
         blank=False,
         null=False,
@@ -62,22 +88,6 @@ class Recipe(models.Model):
         blank=False,
         null=False,
     )
-
-    owner = models.ForeignKey(
-        UserModel,
-        on_delete=models.CASCADE,
-        related_name='recipes',
-    )
-
-    created_at = models.DateTimeField(
-        _("created_at"),
-        default=timezone.now,
-    )
-
-    def save(self, *args, **kwargs):
-        if not self.owner_id and 'request' in kwargs:
-            self.owner = kwargs['request'].user
-        super().save(*args, **kwargs)
 
 
 class Review(models.Model):
@@ -104,7 +114,6 @@ class Review(models.Model):
 
 
 class RecipeLists(models.Model):
-
     user = models.ForeignKey(
         UserModel,
         on_delete=models.CASCADE

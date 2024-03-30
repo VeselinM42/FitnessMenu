@@ -1,11 +1,11 @@
 from django.urls import path, include
 
-from fitness_menu_app.recipes.views import CreateRecipeView, recipes_list, DetailsRecipeView, UpdateRecipeView, \
+from fitness_menu_app.recipes.views import CreateRecipeView, RecipeListView, DetailsRecipeView, UpdateRecipeView, \
     RecipeDeleteView, ReviewCreateView, add_to_list, PersonalRecipeListView
 
 urlpatterns = (
     path('add-recipe/', CreateRecipeView.as_view(), name='add recipe'),
-    path('list/', recipes_list, name='recipes list'),
+    path('list/', RecipeListView.as_view(), name='recipes list'),
     path('recipe/<int:pk>/', include([
         path('', DetailsRecipeView.as_view(), name='details recipe'),
         path('edit/', UpdateRecipeView.as_view(), name='edit-recipe'),

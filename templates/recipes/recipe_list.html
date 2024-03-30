@@ -9,7 +9,7 @@
             </div>
         {% endif %}
 
-        {% for recipe in page_obj %}
+        {% for recipe, nutrition in recipe_nutrition_list %}
             <div class="recipe">
                 <div class="image">
                     {% if recipe.image_url %}
@@ -22,11 +22,12 @@
                 <div>
                     <div class="description">
                         <h2 class="name">{{ recipe.name }}</h2>
+                        <p class="type">Type: {{ recipe.type }}</p>
                         <h4>Macros and calories in 100g</h4>
-                        <p class="calories">Calories: {{ recipe.calories }}kcal</p>
-                        <p class="protein">Protein: {{ recipe.protein }}g</p>
-                        <p class="carbs">Carbs: {{ recipe.carbs }}g</p>
-                        <p class="fats">Fats: {{ recipe.fats }}g</p>
+                        <p class="calories">Calories: {{ nutrition.calories }}kcal</p>
+                        <p class="protein">Protein: {{ nutrition.protein }}g</p>
+                        <p class="carbs">Carbs: {{ nutrition.carbs }}g</p>
+                        <p class="fats">Fats: {{ nutrition.fats }}g</p>
                     </div>
                     {% if request.user.is_authenticated %}
                         <div class="btn">

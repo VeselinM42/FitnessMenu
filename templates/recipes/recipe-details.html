@@ -13,17 +13,18 @@
             <div class="description-container">
                 <div class="details-container">
                     <h2 class="name">{{ recipe.name }}</h2>
+                    <p class="type">Type: {{ recipe.type }}</p>
                     {% if average_rating %}
                         <p>Recipe Rating: {{ average_rating|floatformat:1 }}</p>
                     {% else %}
                         <p>No ratings yet.</p>
                     {% endif %}
                     <h4>Macros and calories in 100g</h4>
-                    <p class="calories">Calories: {{ recipe.calories }}kcal</p>
+                    <p class="calories">Calories: {{ nutrition.calories }}kcal</p>
                     <div class="macros">
-                        <p class="protein">Protein: {{ recipe.protein }}g</p>
-                        <p class="carbs">Carbs: {{ recipe.carbs }}g</p>
-                        <p class="fats">Fats: {{ recipe.fats }}g</p>
+                        <p class="protein">Protein: {{ nutrition.protein }}g</p>
+                        <p class="carbs">Carbs: {{ nutrition.carbs }}g</p>
+                        <p class="fats">Fats: {{ nutrition.fats }}g</p>
                     </div>
                 </div>
                 <div class="how-to-make-container">
@@ -50,7 +51,7 @@
                     </div>
                 {% endif %}
                 <button id="addToListBtn">Add to List</button>
-                <form method="POST" action="{% url 'add-to-list' pk=recipe.pk %}">
+                <form class="dropmenu" method="POST" action="{% url 'add-to-list' pk=recipe.pk %}">
                     {% csrf_token %}
                     <select name="list_id" style="display: none;">
                         <option value="" selected disabled>Select List</option>
@@ -73,8 +74,13 @@
 
             if (addToListBtn && listSelect && addToListForm) {
                 addToListBtn.addEventListener('click', function () {
-                    listSelect.style.display = 'block';
-                    addToListForm.querySelector('button[type="submit"]').style.display = 'block';
+                    if (listSelect.style.display === 'block') {
+                        listSelect.style.display = 'none';
+                        addToListForm.querySelector('button[type="submit"]').style.display = 'none';
+                    } else {
+                        listSelect.style.display = 'block';
+                        addToListForm.querySelector('button[type="submit"]').style.display = 'block';
+                    }
                 });
             } else {
                 console.error("Required elements not found.");

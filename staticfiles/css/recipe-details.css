@@ -36,3 +36,8 @@
 img[alt=no-photo] {
     width: 100%;
 }
+
+.dropmenu {
+    display: flex;
+    justify-content: flex-end;
+}

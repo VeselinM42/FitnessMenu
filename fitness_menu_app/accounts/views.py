@@ -46,7 +46,6 @@ def signout_user(request):
 
 
 class OwnerRequiredMixin(AccessMixin):
-    """Verify that the current user has this profile."""
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk != kwargs.get('pk', None):
@@ -75,20 +74,25 @@ class ProfileDeleteView(views.DeleteView):
     success_url = reverse_lazy('index')
 
 
-@login_required
-def profile_recipes_list(request, pk):
-    user_id = pk
-    profile_recipes = Recipe.objects.filter(owner_id=user_id)
+class ProfileRecipesView(views.ListView):
+    model = Recipe
+    template_name = 'recipes/recipe_list.html'
+    context_object_name = 'recipe_nutrition_list'
+    paginate_by = 3
 
-    paginator = Paginator(profile_recipes, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    def get_queryset(self):
+        queryset = super().get_queryset()
 
-    context = {
-        'page_obj': page_obj
-    }
+        user_id = self.request.user.id
 
-    return render(request, 'recipes/recipe_list.html', context)
+        queryset = queryset.filter(owner_id=user_id)
+
+        recipe_nutrition_list = []
+
+        for recipe in queryset:
+            nutrition = recipe.nutrition.first()
+            recipe_nutrition_list.append((recipe, nutrition))
+        return recipe_nutrition_list
 
 
 class EmailChangeView(views.UpdateView):
